@@ -2,22 +2,21 @@
 
 namespace Innoweb\SocialMeta\Extensions;
 
-use BurnBright\ExternalURLField\ExternalURLField;
-use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
-use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\ToggleCompositeField;
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\FieldType\DBHTMLText;
-use SilverStripe\ORM\FieldType\DBHTMLVarchar;
+use SilverStripe\Forms\TextareaField;
 use SilverStripe\ORM\FieldType\DBText;
-use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\ORM\FieldType\DBVarchar;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+use SilverStripe\Forms\ToggleCompositeField;
+use SilverStripe\ORM\FieldType\DBHTMLVarchar;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use BurnBright\ExternalURLField\ExternalURLField;
 
-class MetaFieldsDataObjectExtension extends DataExtension
+class MetaFieldsDataObjectExtension extends Extension
 {
     private static $metafields_tab_name = 'Root.Metadata';
 
@@ -163,7 +162,7 @@ class MetaFieldsDataObjectExtension extends DataExtension
 
         $metaTitleField = TextField::create(
             'MetaTitle',
-            _t("MetaFieldsDataObjectExtension.MetaTitle", 'Meta Title')
+            _t(__CLASS__ . ".MetaTitle", 'Meta Title')
         )
             ->setRightTitle(_t(
                 "MetaFieldsDataObjectExtension.MetaTitleHelp",
@@ -171,7 +170,7 @@ class MetaFieldsDataObjectExtension extends DataExtension
             ))
             ->addExtraClass('help');
 
-        $metaURLField = ExternalURLField::create('MetaCanonicalURL', _t("MetaFieldsDataObjectExtension.CanonicalURL", 'Canonical URL'))
+        $metaURLField = ExternalURLField::create('MetaCanonicalURL', _t(__CLASS__ . ".CanonicalURL", 'Canonical URL'))
             ->setRightTitle(_t(
                 "MetaFieldsDataObjectExtension.MetaCanonicalURLHelp",
                 'This defaults to the absolute URL of the page. Only set this if search engines should count another URL as the original (e.g. if re-posting a blog post from another source).'
@@ -179,19 +178,19 @@ class MetaFieldsDataObjectExtension extends DataExtension
 
         $metaImageField = UploadField::create(
             'MetaImage',
-            _t("MetaFieldsDataObjectExtension.Image", 'Image')
+            _t(__CLASS__ . ".Image", 'Image')
         )
             ->setFolderName('Meta')
             ->setAllowedFileCategories('image');
 
-        $metaDescriptionField = TextareaField::create('MetaDescription', _t("MetaFieldsDataObjectExtension.MetaDescription", 'Meta Description'))
+        $metaDescriptionField = TextareaField::create('MetaDescription', _t(__CLASS__ . ".MetaDescription", 'Meta Description'))
             ->setRightTitle(_t(
                 "MetaFieldsDataObjectExtension.MetaDescriptionHelp",
                 "Search engines use this content for displaying search results (although it will not influence their ranking)."
             ))
             ->addExtraClass('help');
 
-        $metaExtraField = TextareaField::create('ExtraMeta', _t("MetaFieldsDataObjectExtension.ExtraMeta", 'Extra Meta Tags'))
+        $metaExtraField = TextareaField::create('ExtraMeta', _t(__CLASS__ . ".ExtraMeta", 'Extra Meta Tags'))
             ->setRightTitle(_t(
                 "MetaFieldsDataObjectExtension.ExtraMetaHelp",
                 "HTML tags for additional meta information. For example <meta name=\"customName\" content=\"your custom content here\" />"
@@ -213,7 +212,6 @@ class MetaFieldsDataObjectExtension extends DataExtension
                     $metaExtraField
                 ]
             );
-
         } else {
             $fields->push(
                 ToggleCompositeField::create(

@@ -2,12 +2,13 @@
 
 namespace Innoweb\SocialMeta\Extensions;
 
-use SilverStripe\Blog\Model\BlogController;
+use SilverStripe\Core\Extension;
+use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Blog\Model\BlogController;
 
-class BlogExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
+class BlogExtension extends Extension
 {
 
     public function getSocialMetaTitle()
@@ -125,5 +126,4 @@ class BlogExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
         }
         return null;
     }
-
 }

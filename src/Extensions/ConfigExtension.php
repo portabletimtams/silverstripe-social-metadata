@@ -2,36 +2,36 @@
 
 namespace Innoweb\SocialMeta\Extensions;
 
-use BetterBrief\GoogleMapField;
-use BurnBright\ExternalURLField\ExternalURLField;
-use Innoweb\InternationalPhoneNumberField\Forms\InternationalPhoneNumberField;
-use Innoweb\SocialMeta\Model\BusinessLocation;
-use Innoweb\SocialMeta\Model\OpeningHours;
-use Sheadawson\DependentDropdown\Forms\DependentDropdownField;
-use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
-use SilverStripe\Control\Controller;
+use BetterBrief\GoogleMapField;
+use SilverStripe\Core\Extension;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
 use SilverStripe\Control\Director;
-use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Environment;
-use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CheckboxSetField;
-use SilverStripe\Forms\DatetimeField;
-use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\EmailField;
 use SilverStripe\Forms\FieldGroup;
-use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\LiteralField;
-use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\DatetimeField;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextareaField;
+use SilverStripe\Forms\CheckboxSetField;
+use Innoweb\SocialMeta\Model\OpeningHours;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
-use SilverStripe\ORM\DataExtension;
-use Symbiote\MultiValueField\Fields\MultiValueTextField;
 use UncleCheese\DisplayLogic\Forms\Wrapper;
+use Innoweb\SocialMeta\Model\BusinessLocation;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use BurnBright\ExternalURLField\ExternalURLField;
+use Symbiote\MultiValueField\Fields\MultiValueTextField;
+use Sheadawson\DependentDropdown\Forms\DependentDropdownField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use Innoweb\InternationalPhoneNumberField\Forms\InternationalPhoneNumberField;
 
-class ConfigExtension extends DataExtension
+class ConfigExtension extends Extension
 {
     private static $socialmeta_images_folder;
 
@@ -186,7 +186,7 @@ class ConfigExtension extends DataExtension
                     $addresses[] = $address;
                 }
 
-                foreach($additionalLocations as $location) {
+                foreach ($additionalLocations as $location) {
                     if (
                         $location->MicroDataStreetAddress
                         || $location->MicroDataPOBoxNumber
@@ -226,7 +226,7 @@ class ConfigExtension extends DataExtension
                 }
 
                 $subOrganisations = [];
-                foreach($additionalLocations as $location) {
+                foreach ($additionalLocations as $location) {
 
                     $organisation = [
                         '@type'     =>  $location->getMicroDataSchemaType(),
@@ -338,7 +338,6 @@ class ConfigExtension extends DataExtension
                     $data['subOrganization'] = $subOrganisations;
                 }
             }
-
         } else {
             if (isset($address)) {
                 $addresses[] = $address;
@@ -391,7 +390,6 @@ class ConfigExtension extends DataExtension
             }
 
             $data['location'] = $location;
-
         } else {
 
             if (isset($addresses) && count($addresses)) {
@@ -641,7 +639,7 @@ class ConfigExtension extends DataExtension
                 ),
                 MultiValueTextField::create(
                     'SocialMetaFacebookAdminIDs',
-                    _t('SocialMetaConfigExtension.FACEBOOKADMINIDS','Facebook Admin IDs')
+                    _t('SocialMetaConfigExtension.FACEBOOKADMINIDS', 'Facebook Admin IDs')
                 ),
                 ExternalURLField::create(
                     'SocialMetaFacebookPage',
@@ -659,7 +657,7 @@ class ConfigExtension extends DataExtension
             ]
         );
 
-        $typeSpecificSource = function($type) {
+        $typeSpecificSource = function ($type) {
             if ($type === 'Organization') {
                 $key = 'organization_types';
             } else if ($type === 'LocalBusiness') {
@@ -793,7 +791,6 @@ class ConfigExtension extends DataExtension
                     )
                 )
             );
-
         } else {
 
             $fields->addFieldToTab(
@@ -801,7 +798,7 @@ class ConfigExtension extends DataExtension
                 $mapField = Wrapper::create(
                     LiteralField::create(
                         'CoordinatesInfo',
-                        '<p>'._t('SocialMetaBusinessLocation.AddGoogleMapsAPIKey', 'Please add a Google Maps API key in order to enable coordinates.').'</p>'
+                        '<p>' . _t('SocialMetaBusinessLocation.AddGoogleMapsAPIKey', 'Please add a Google Maps API key in order to enable coordinates.') . '</p>'
                     )
                 )
             );
@@ -865,7 +862,7 @@ class ConfigExtension extends DataExtension
                 ),
                 MultiValueTextField::create(
                     'SocialMetaSameAsLinks',
-                    _t('SocialMetaConfigExtension.SocialMetaSameAsLinks','Same As Links')
+                    _t('SocialMetaConfigExtension.SocialMetaSameAsLinks', 'Same As Links')
                 ),
             ]
         );
@@ -887,8 +884,6 @@ class ConfigExtension extends DataExtension
 
     public function onBeforeWrite()
     {
-        parent::onBeforeWrite();
-
         if ($this->getOwner()->MicroDataType === 'Organization') {
 
             $this->getOwner()->MicroDataPaymentAccepted = '';
@@ -903,14 +898,12 @@ class ConfigExtension extends DataExtension
                     $item->delete();
                 }
             }
-
         } else if ($this->getOwner()->MicroDataType === 'LocalBusiness') {
 
             $this->getOwner()->MicroDataEventLocationName = '';
             $this->getOwner()->MicroDataEventLocationWebsite = '';
             $this->getOwner()->MicroDataEventStart = '';
             $this->getOwner()->MicroDataEventEnd = '';
-
         } else if ($this->getOwner()->MicroDataType === 'Event') {
 
             $this->getOwner()->MicroDataEmail = '';

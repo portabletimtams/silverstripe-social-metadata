@@ -2,33 +2,32 @@
 
 namespace Innoweb\SocialMeta\Extensions;
 
-use BurnBright\ExternalURLField\ExternalURLField;
-use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\i18n\i18n;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Image;
-use SilverStripe\CMS\Controllers\ContentController;
-use SilverStripe\CMS\Controllers\RootURLController;
-use SilverStripe\CMS\Model\SiteTree;
-use SilverStripe\Control\Controller;
-use SilverStripe\Control\Director;
-use SilverStripe\Core\Config\Config;
-use SilverStripe\Core\Injector\Injector;
-use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\TextareaField;
-use SilverStripe\Forms\TextField;
-use SilverStripe\i18n\i18n;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\Core\Extension;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Security\Member;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\TextareaField;
+use SilverStripe\ORM\FieldType\DBText;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\View\Parsers\HTMLValue;
+use SilverStripe\ORM\FieldType\DBVarchar;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\FieldType\DBHTMLVarchar;
-use SilverStripe\ORM\FieldType\DBText;
-use SilverStripe\ORM\FieldType\DBVarchar;
-use SilverStripe\Security\Member;
-use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\View\ArrayData;
-use SilverStripe\View\HTML;
-use SilverStripe\View\Parsers\HTMLValue;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use BurnBright\ExternalURLField\ExternalURLField;
+use SilverStripe\CMS\Controllers\ContentController;
+use SilverStripe\CMS\Controllers\RootURLController;
 
-class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
+class SiteTreeExtension extends Extension
 {
     public const INCLUDE_SITE_JSONLD_HOME = 'home';
     public const INCLUDE_SITE_JSONLD_ALL = 'all';
@@ -411,7 +410,6 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
                 'content' => json_encode($schemaData, $options)
             ];
         }
-
     }
 
     public function MetaTags(&$tagString)
@@ -580,7 +578,8 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
         return $config->getSocialMetaValue('SiteImage');
     }
 
-    public function getDefaultSocialMetaLocale() {
+    public function getDefaultSocialMetaLocale()
+    {
         return i18n::get_locale();
     }
 
@@ -866,7 +865,7 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
     {
         $metaTitleField = TextField::create(
             'MetaTitle',
-            _t('SiteTreeExtension.MetaTitle', 'Meta Title')
+            _t(__CLASS__ . '.MetaTitle', 'Meta Title')
         )
             ->setRightTitle(_t(
                 'SiteTreeExtension.MetaTitleHelp',
@@ -875,7 +874,7 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
             ->setAttribute('placeholder', $this->getOwner()->getDefaultSocialMetaTitle())
             ->setTargetLength(50, 4, 60);
 
-        $metaURLField = ExternalURLField::create('MetaCanonicalURL', _t('SiteTreeExtension.MetaCanonicalURL', 'Canonical URL'))
+        $metaURLField = ExternalURLField::create('MetaCanonicalURL', _t(__CLASS__ . '.MetaCanonicalURL', 'Canonical URL'))
             ->setRightTitle(_t(
                 'SiteTreeExtension.MetaCanonicalURLHelp',
                 'This defaults to the absolute URL of the page. Only set this if search engines should count another URL as the original (e.g. if re-posting a blog post from another source).'
@@ -884,7 +883,7 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
 
         $metaImageField = UploadField::create(
             'MetaImage',
-            _t('SiteTreeExtension.Image', 'Image')
+            _t(__CLASS__ . '.Image', 'Image')
         )
             ->setFolderName('Meta')
             ->setAllowedFileCategories('image');
@@ -900,10 +899,10 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
                 $this->getOwner()->config()->metadata_tab_name,
                 [
                     $metaTitleField,
-                    $metaDescriptionField = TextareaField::create('MetaDescription', _t('SiteTreeExtension.MetaDescription', 'Meta Description')),
+                    $metaDescriptionField = TextareaField::create('MetaDescription', _t(__CLASS__ . '.MetaDescription', 'Meta Description')),
                     $metaURLField,
                     $metaImageField,
-                    $metaExtraField = TextareaField::create('ExtraMeta', _t('SiteTreeExtension.ExtraMeta', 'Extra Meta Tags'))
+                    $metaExtraField = TextareaField::create('ExtraMeta', _t(__CLASS__ . '.ExtraMeta', 'Extra Meta Tags'))
                 ]
             );
 
@@ -924,7 +923,6 @@ class SiteTreeExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
                         "HTML tags for additional meta information. For example <meta name=\"customName\" content=\"your custom content here\" />"
                     )
                 );
-
         } else {
             $fields->insertBefore('MetaDescription', $metaTitleField);
             $fields->insertBefore('MetaDescription', $metaURLField);

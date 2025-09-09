@@ -2,13 +2,13 @@
 
 namespace Innoweb\SocialMeta\Extensions;
 
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Model\ArrayData;
 use SilverStripe\Forms\LiteralField;
-use SilverStripe\ORM\ArrayList;
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\List\ArrayList;
 
-class SocialProfilesConfigExtension extends DataExtension
+class SocialProfilesConfigExtension extends Extension
 {
     public function updateCMSFields(FieldList $fields)
     {
@@ -16,7 +16,7 @@ class SocialProfilesConfigExtension extends DataExtension
             'SocialMetaSameAsLinks',
             LiteralField::create(
                 'SocialMetaSameAsSocialInfoField',
-                '<p>' . _t('SocialProfilesConfigExtension.ProfilesAddedAutomatically', 'Social media profiles added on the Social Media Profiles tab are added automatically.') . '</p>'
+                '<p>' . _t(__CLASS__ . '.ProfilesAddedAutomatically', 'Social media profiles added on the Social Media Profiles tab are added automatically.') . '</p>'
             )
         );
     }
