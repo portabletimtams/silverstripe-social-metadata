@@ -18,13 +18,24 @@ The module adds the following functionality to a site:
 
 ## Requirements
 
-* Silverstripe CMS 5
+* Silverstripe 6
 
-Note: this version is compatible with Silverstripe 5.
-For Silverstripe 4, please see the [7.x release line](https://github.com/xini/silverstripe-social-metadata/tree/7)
-For Silverstripe 3, please see the [3.x release line](https://github.com/xini/silverstripe-social-metadata/tree/3.0).
 
 ## Installation
+
+Add the following to your composer.json file:
+```
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/portabletimtams/silverstripe-externalurlfield.git"
+    },
+    {
+        "type": "vcs",
+        "url": "https://github.com/portabletimtams/silverstripe-international-phone-number-field.git"
+    }
+],
+```
 
 Install the module using composer:
 ```
@@ -35,7 +46,7 @@ Then run dev/build.
 
 ## Configuration
 
-The module adds a new tab to the SiteConfig in the CMS where all the metadata can be configured. 
+The module adds a new tab to the SiteConfig in the CMS where all the metadata can be configured.
 
 ## License
 

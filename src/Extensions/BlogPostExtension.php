@@ -2,7 +2,9 @@
 
 namespace Innoweb\SocialMeta\Extensions;
 
-class BlogPostExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
+use SilverStripe\Core\Extension;
+
+class BlogPostExtension extends Extension
 {
     public function getSocialMetaDescription()
     {
@@ -64,9 +66,9 @@ class BlogPostExtension extends \SilverStripe\CMS\Model\SiteTreeExtension
     public function getSocialMetaSchemaData()
     {
         $data = array(
-            '@context' 	=>	'https://schema.org',
-            '@type' 	=>	'Article',
-            'headline'	=>	$this->getOwner()->getSocialMetaValue('Title')
+            '@context'     =>    'https://schema.org',
+            '@type'     =>    'Article',
+            'headline'    =>    $this->getOwner()->getSocialMetaValue('Title')
         );
 
         $config = $this->getOwner()->getSocialMetaConfig();
